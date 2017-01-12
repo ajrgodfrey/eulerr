@@ -87,6 +87,15 @@ plot.eulerr <- function(x, fill_opacity = 0.4, polygon_args = list(),
 
   do.call(graphics::polygon, polygon_args)
 
+  labelplaces <- place_labels(X,Y,R)
+  text_args$x      <- labelplaces$x
+  text_args$y      <- labelplaces$y
+  text_args$labels <- labelplaces$labs
+  do.call(graphics::text, text_args)
+}
+
+
+place_labels <- function(x,y,r){
   # Find good positions for the text centers
   text_x <- double(length(X))
   text_y <- double(length(Y))
@@ -130,11 +139,7 @@ plot.eulerr <- function(x, fill_opacity = 0.4, polygon_args = list(),
     text_y[i] <- dens$y[mind[, 2L]]
   }
 
-  text_args$x      <- text_x
-  text_args$y      <- text_y
-  text_args$labels <- names(r)
-
-  do.call(graphics::text, text_args)
+  return(list(x=text_x, y=text_y, labs=names(r)))
 }
 
 #' Plot eulerr plot grid
